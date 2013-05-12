@@ -1,4 +1,57 @@
 ﻿function BOT(){
+	/*DOMParser polyfill*/
+	(function(DOMParser) {  
+		"use strict";  
+		var DOMParser_proto = DOMParser.prototype  
+		, real_parseFromString = DOMParser_proto.parseFromString;
+	
+		// Firefox/Opera/IE throw errors on unsupported types  
+		try {  
+			// WebKit returns null on unsupported types  
+			if ((new DOMParser).parseFromString("", "text/html")) {  
+				// text/html parsing is natively supported  
+				return;  
+			}  
+		} catch (ex) {}  
+	
+		DOMParser_proto.parseFromString = function(markup, type) {  
+			if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {  
+				var doc = document.implementation.createHTMLDocument("")
+				, doc_elt = doc.documentElement
+				, first_elt;
+		
+				doc_elt.innerHTML = markup;
+				console.log(doc_elt.querySelector('body').children[0])
+				doc.replaceChild(doc_elt.querySelector('body').children[0],doc_elt);
+				
+	
+				return doc;  
+			} else {  
+				return real_parseFromString.apply(this, arguments);  
+			}  
+		};  
+	}(DOMParser));
+	/*END DOMParser polyfill*/
+	var d = document;
+	var q = 'querySelector';
+	var s = 'style';
+	this.interface = new function(){
+		var DOMP = new DOMParser();
+		var commbar = d[q]('#commbar');
+		var commbarContainer = commbar[q]('.jxBarContainer');
+		
+		var tradeSrc = '<span class="jxButtonContainer" id="addon-trade-panel">'
+			+'<a class="jxButton jxButtonFlyout jxDiscloser" target="" href="javascript:void(0);" title="Информация по лучшим ценам на ресурсы с посещенных вами планет." alt="Информация по лучшим ценам на ресурсы с посещенных вами планет.">'
+				+'<span class="jxButtonContent">'
+					+'<img class="jxButtonIcon" src="http://game.far7.by/static/img/u/a_pixel.png" title="Информация по лучшим ценам на ресурсы с посещенных вами планет." alt="Информация по лучшим ценам на ресурсы с посещенных вами планет." style="background-image: url(http://game.far7.by/static/img/u/icon-trade.png);"/>'
+					+'<span class="jxButtonLabel" style="">'
+						+'<div id="addon-trade">Торговля</div>'
+		+'</span></span></a></span>';
+		this.tradeButton = DOMP.parseFromString(tradeSrc,'text/html').documentElement;
+		//TODO: Compute new width
+		commbar[s].width = '1000px';
+		commbarContainer.appendChild(this.tradeButton);
+	}
 	this.trade = new function tradeProcess(){
 		this.fine = function(method, type, target){
 			
