@@ -261,10 +261,11 @@ var W = window,
 						buy: buy[HT].replace('кр.','').replace(/\s/,'').replace('дефицит','-1')*1,
 						time: time
 					}
-					req.info[i] = {sell:sell,buy:buy};
+					req.info[i] = {sell:this.data[i][planet[HT]].sell,buy:this.data[i][planet[HT]].buy};
 				}						
 				xhr.open('POST', SURL, true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+				console.log(req);
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
 		}
