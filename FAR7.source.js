@@ -266,6 +266,7 @@ var W = window,
 				xhr.open('POST', SURL, true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				xhr.send("jsonString=" + JSON.stringify(req));
+				console.log(xhr);
 			}
 		}
 		trade.start = function(){
