@@ -144,7 +144,7 @@ var W = window,
 				'</div>';
 			
 			var tDC = S['TradeDialogContent'] = TC[QS]('#landing-trade');
-			var DT = S['data'] = {};
+			var DT = S['DOM'] = {};
 			
 			for(var i=1; i < 14; ++i){
 				var CI		= tDC[QS]('#s'+i);
@@ -156,8 +156,8 @@ var W = window,
 				DT[i] = {
 					'img': {dom:img},
 					'count':{dom:count},
-					'sell': {dom:sell, info:{system:null,planet:null,cost:null,time:null}},
-					'buy': {dom:buy, info:{system:null,planet:null,cost:null,time:null}},						
+					'sell': {dom:sell},
+					'buy': {dom:buy},						
 					'arrow':{dom:arrow}
 				};
 			}
@@ -188,16 +188,19 @@ var W = window,
 					xhr.onreadystatechange = function(){
 						if (xhr.readyState != 4) return;						
 						if (xhr.status == 200) {
-							console.log(xhr.response);
+							var RS = JSON.parse(xhr.response);
+							for(var i in RS){ ch(i);
+								var buy = RS[1].buy, sell = RS[i].sell, obj = {buy:buy, sell:sell};
+								for(var price in {buy:'',sell:''}){
+									DT[i][price].dom[HT] = obj[price].price+'кр.';
+									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system].title_ru
+													+'\nПланета: '+fsE.db.galaxy.planets[obj[price].planet].title_ru
+													+'\nОбновлено в '+obj[price].time.toLocaleTimeString());
+								}								
+							}
 						} 
 						else {
-							for(var i in DT){
-								var CI = tDC[QS]('#s'+i);
-								if(!CI[QS]('#is'+i)){		CI[AC](DT[i].img.dom)	}
-								if(!CI[QS]('#is'+i+'c')){	CI[AC](DT[i].count.dom)		}
-								if(!CI[QS]('#is'+i+'sell')){	CI[AC](DT[i].buy.dom)	}
-								if(!CI[QS]('#is'+i+'buy')){	CI[AC](DT[i].sell.dom)	}					
-								if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
+							for(var i in DT){ ch(i);
 								var buy = trade.buy(i), sell = trade.sell(i), obj = {};
 								(buy[0] && (obj.buy = buy[0])) 	 || (DT[i].buy.dom[HT] = '-');
 								(sell[0] && (obj.sell = sell[0])) || (DT[i].sell.dom[HT] = '-');
@@ -206,16 +209,20 @@ var W = window,
 									DT[i][price].dom[SA]('title','Система: '+obj[price].system
 													+'\nПланета: '+obj[price].planet
 													+'\nОбновлено в '+obj[price].time.toLocaleTimeString());
-									DT[i][price].info.system = obj[price].system;
-									DT[i][price].info.planet = obj[price].planet;
-									DT[i][price].info.cost = obj[price][price];
-									DT[i][price].info.time = obj[price].time;
 								}			
 							}
 						}
 					}
 					xhr.send();			
 			};
+			function ch(i){
+				var CI = tDC[QS]('#s'+i);
+				if(!CI[QS]('#is'+i)){		CI[AC](DT[i].img.dom)	}
+				if(!CI[QS]('#is'+i+'c')){	CI[AC](DT[i].count.dom)		}
+				if(!CI[QS]('#is'+i+'sell')){	CI[AC](DT[i].buy.dom)	}
+				if(!CI[QS]('#is'+i+'buy')){	CI[AC](DT[i].sell.dom)	}					
+				if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
+			}
 		}
 		trade.fine = function(m, v, t){			
 			var c =  this.data[t],
