@@ -1,22 +1,22 @@
 ﻿function BOT(){
-	this.trade = new function tradeProcess(){
-		var D = document,
-			W = window,
-			AC = 'appendChild',
-			CE = 'createElement',
-			RC = 'removeChild',
-			QS = 'querySelector',
-			ST = 'style',
-			SA = 'setAttribute',
-			AE = 'addEventListener',
-			RE = 'removeEventListener',
-			HT = 'innerHTML';
+	var D = document,
+		W = window,
+		AC = 'appendChild',
+		CE = 'createElement',
+		RC = 'removeChild',
+		QS = 'querySelector',
+		ST = 'style',
+		SA = 'setAttribute',
+		AE = 'addEventListener',
+		RE = 'removeEventListener',
+		HT = 'innerHTML';
+	this.trade = new function tradeProcess(){		
 		var trade = this;
 		this.interface = new function(){
 			var S = this;
 			var far = D[QS]('#far-interface');
 			var commbar = D[QS]('#commbar');
-			var commbarContainer = commbar[QS]('.jxBarContainer');
+			var cC = commbar[QS]('.jxBarContainer');
 			var TC = D[CE]('div');
 			var tradeSrc = 
 				'<span class="jxButtonContainer" id="addon-trade-button">'
@@ -29,7 +29,7 @@
 			TC[HT] = tradeSrc;
 			var tB = S['TradeButton'] = TC[QS]('#addon-trade-button');
 				tB[AE]('click', dd, false);
-			commbarContainer[AC](tB);
+			cC[AC](tB);
 			commbar[ST].width = '1000px';
 			
 			var rect = tB.getClientRects()[0];
@@ -66,7 +66,6 @@
 			}
 			
 			function dd(e){
-				console.log('hi')
 				e.stopPropagation();
 				if(tD[ST].display == 'none'){
 					ui();
@@ -110,30 +109,29 @@
 			
 			}
 		}
-		this.fine = function(method, type, target){
-			
-			var current =  this.data[target];
-			var fine = [];
-			for(var planet in current){
-				if(current[planet][method] != -1){
-					if(!fine[0]){ fine[0] = current[planet]; continue;}
-					if(type == 'max'){
-						if(current[planet][method] > fine[0][method]) fine = [current[planet]];
-						else if(current[planet][method] == fine[0][method]) fine.push(current[planet]);
+		this.fine = function(m, v, t){			
+			var c =  this.data[t],
+				f = [];
+			for(var p in c){
+				if(c[p][m] != -1){
+					if(!f[0]){ f[0] = c[p]; continue;}
+					if(v == 'max'){
+						if(c[p][m] > f[0][m]) f = [c[p]];
+						else if(c[p][m] == f[0][m]) f.push(c[p]);
 					}
-					if(type == 'min'){
-						if(current[planet][method] < fine[0][method]) fine = [current[planet]];
-						else if(current[planet][method] == fine[0][method]) fine.push(current[planet]);
+					if(v == 'min'){
+						if(c[p][m] < f[0][m]) f = [c[p]];
+						else if(c[p][m] == f[0][m]) f.push(c[p]);
 					}
 				}
 			}
-			return fine;
+			return f;
 		}
-		this.buy = function(target){
-			return this.fine('buy','min', target);
+		this.buy = function(t){
+			return this.fine('buy','min', t);
 		}
-		this.sell = function(target){
-			return this.fine('sell','max', target);
+		this.sell = function(t){
+			return this.fine('sell','max', t);
 		}
 		this.stop = function(){
 			clearInterval(this.interval);
@@ -286,5 +284,46 @@
 			fsE.flyto({point:{x: absX,y:absY}});		
 		}
 	};
+	this.jblst = new function jblstProcess(){
+		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f'];
+		this.cacheJob = function(){
+			var ps = fsE.db.galaxy.planets,
+				ls = fsE.land.db.joblist,
+				cp = {},
+				cj = {}; 
+			for(var p in ps){cp[ps[p].title_ru] = ps[p].system}; 
+			ls.map(function(e){
+				var t = /^(.*):.*/.exec(e.title)[1];
+				cj[cp[t]] = cj[cp[t]]||[];
+				cj[cp[t]].push(e);
+			});
+			return cj;
+		},
+		this.colorJob = function(){
+			var ca = [], 
+				cj = this.cacheJob(), 
+				cl = this.colorArr,
+				tr = fsE.land.job_bar.domObj,
+				lv = fsE.player.lvl,
+				ps = 0; 
+			for(var i in cj){ca.push(cj[i])};
+			ca.map(function(a){
+				a.map(function(e, i, a){
+					var bb = tr[QS]('[id="'+e.qsid+'"]');
+					var bt = bb[QS]('.jxButton');
+					var bc = bt[QS]('.jxButtonContent');
+					if(e.info.start_level > lv){bb[ST].display = 'none';}
+					if(a.length > 1){						
+						bt[ST].boxShadow = '0 0 10px 3px '+cl[ps]+' inset';
+						bc[ST].boxShadow = '-3px 0 10px 3px '+cl[ps++]+' inset';
+					}						
+				});
+			});
+		}
+		this.interval = setInterval(this.colorJob.bind(this),3000);
+		this.stop = function(){clearInterval(this.interval);}
+	}
+	
 }
 var bot = new BOT();
+
