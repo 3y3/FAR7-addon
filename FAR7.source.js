@@ -1,8 +1,8 @@
-﻿function ADDON(){
+﻿function HELPER(){
 var W = window,
-	D = W.document,
+	D = W.document,	
+	U = 'http://far7-plugin.tk/plugin/',
 	fsE = W.fsE,
-	SURL = 'http://far7-plugin.tk/write/',
 	AC = 'appendChild',
 	CE = 'createElement',
 	RC = 'removeChild',
@@ -181,29 +181,40 @@ var W = window,
 					tB[AE]('click', dd);
 				}
 			};
-			function ui(){			
-				for(var i in DT){
-					var CI = tDC[QS]('#s'+i);
-					if(!CI[QS]('#is'+i)){		CI[AC](DT[i].img.dom)	}
-					if(!CI[QS]('#is'+i+'c')){	CI[AC](DT[i].count.dom)		}
-					if(!CI[QS]('#is'+i+'sell')){	CI[AC](DT[i].buy.dom)	}
-					if(!CI[QS]('#is'+i+'buy')){	CI[AC](DT[i].sell.dom)	}					
-					if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
-					var buy = trade.buy(i), sell = trade.sell(i), obj = {};
-					(buy[0] && (obj.buy = buy[0])) 	 || (DT[i].buy.dom[HT] = '-');
-					(sell[0] && (obj.sell = sell[0])) || (DT[i].sell.dom[HT] = '-');
-					for(var price in obj){
-						DT[i][price].dom[HT] = obj[price][price]+'кр.';
-						DT[i][price].dom[SA]('title','Система: '+obj[price].system
-										+'\nПланета: '+obj[price].planet
-										+'\nОбновлено в '+obj[price].time.toLocaleTimeString());
-						DT[i][price].info.system = obj[price].system;
-						DT[i][price].info.planet = obj[price].planet;
-						DT[i][price].info.cost = obj[price][price];
-						DT[i][price].info.time = obj[price].time;
-					}			
-				}
-			
+			function ui(){
+				var xhr = new XMLHttpRequest();
+					xhr.open('POST', U+'read', true);
+					xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+					xhr.onreadystatechange = function(){
+						if (xhr.readyState != 4) return;						
+						if (xhr.status == 200) {
+							console.log(xhr.response);
+						} 
+						else {
+							for(var i in DT){
+								var CI = tDC[QS]('#s'+i);
+								if(!CI[QS]('#is'+i)){		CI[AC](DT[i].img.dom)	}
+								if(!CI[QS]('#is'+i+'c')){	CI[AC](DT[i].count.dom)		}
+								if(!CI[QS]('#is'+i+'sell')){	CI[AC](DT[i].buy.dom)	}
+								if(!CI[QS]('#is'+i+'buy')){	CI[AC](DT[i].sell.dom)	}					
+								if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
+								var buy = trade.buy(i), sell = trade.sell(i), obj = {};
+								(buy[0] && (obj.buy = buy[0])) 	 || (DT[i].buy.dom[HT] = '-');
+								(sell[0] && (obj.sell = sell[0])) || (DT[i].sell.dom[HT] = '-');
+								for(var price in obj){
+									DT[i][price].dom[HT] = obj[price][price]+'кр.';
+									DT[i][price].dom[SA]('title','Система: '+obj[price].system
+													+'\nПланета: '+obj[price].planet
+													+'\nОбновлено в '+obj[price].time.toLocaleTimeString());
+									DT[i][price].info.system = obj[price].system;
+									DT[i][price].info.planet = obj[price].planet;
+									DT[i][price].info.cost = obj[price][price];
+									DT[i][price].info.time = obj[price].time;
+								}			
+							}
+						}
+					}
+					xhr.send();			
 			};
 		}
 		trade.fine = function(m, v, t){			
@@ -263,9 +274,8 @@ var W = window,
 					}
 					req.info[i] = {sell:this.data[i][planet[HT]].sell,buy:this.data[i][planet[HT]].buy};
 				}						
-				xhr.open('POST', SURL, true);
+				xhr.open('POST', U+'write', true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-				console.log(req);
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
 		}
@@ -357,5 +367,5 @@ var W = window,
 
 	T.start = function(a){a.map(function(m){T[m].start()})};
 }
-ADDON = new ADDON()
-ADDON.start(["trade","jblst","shlst"]);
+HELPER = new HELPER()
+HELPER.start(["trade","jblst","shlst"]);

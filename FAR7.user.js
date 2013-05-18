@@ -16,9 +16,7 @@
     if (W.self != W.top) {
         return;
     }
-    if (/http:\/\/game.far7.by/.test(W.location.href)) {
-		
-		
+    if (/http:\/\/game.far7.by/.test(W.location.href)) {		
 		(function checkStart(){
 			if(document.querySelector('#commbar .jxBarContainer')){
 				var s = document.createElement('script');
