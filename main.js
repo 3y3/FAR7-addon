@@ -308,22 +308,23 @@
 				ps = 0; 
 			for(var i in cj){ca.push(cj[i])};
 			ca.map(function(a){
-				a.map(function(e, i, a){
+				a.map(function(e, i){
 					var bb = tr[QS]('[id="'+e.qsid+'"]');
 					var bt = bb[QS]('.jxButton');
 					var bc = bt[QS]('.jxButtonContent');
-					if(e.info.start_level > lv){bb[ST].display = 'none';}
+					if(e.info.start_level > lv){bb[ST].opacity = '0.3';}
 					if(a.length > 1){						
 						bt[ST].boxShadow = '0 0 10px 3px '+cl[ps]+' inset';
-						bc[ST].boxShadow = '-3px 0 10px 3px '+cl[ps++]+' inset';
+						bc[ST].boxShadow = '-3px 0 10px 3px '+cl[ps]+' inset';
 					}						
 				});
+				(a.length > 1) && ps++;
 			});
 		}
 		this.interval = setInterval(this.colorJob.bind(this),3000);
 		this.stop = function(){clearInterval(this.interval);}
 	}
-	
+
 }
 var bot = new BOT();
 
