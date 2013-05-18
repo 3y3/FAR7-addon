@@ -190,7 +190,7 @@ var W = window,
 						if (xhr.status == 200) {
 							var RS = JSON.parse(xhr.response);
 							for(var i in RS){ ch(i);
-								var buy = RS[1].buy, sell = RS[i].sell, obj = {buy:buy, sell:sell};
+								var buy = RS[1]['1'], sell = RS[i]['2'], obj = {buy:buy, sell:sell};
 								for(var price in {buy:'',sell:''}){
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
 									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system].title_ru
