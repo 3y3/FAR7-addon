@@ -47,7 +47,7 @@ var W = window,
 			far[AC](tD);
 			
 			TC[HT] = 
-				'<div id="landing-trade">'
+				'<div id="landing-trade">'+
 					'<div id="landing-trade-shp">'+
 						'<div id="s1" class="s1 trade">'+
 							'<img id="is1" isid="1" src="/static/img/i/r/tore.png" class="dragable animopa itemtip iundefined is1 shopitem" title="" style="top: 1px; left: 1px; margin: 0px; position: relative;">'+

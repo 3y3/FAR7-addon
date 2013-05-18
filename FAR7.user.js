@@ -22,7 +22,7 @@
 		(function checkStart(){
 			if(document.querySelector('#commbar .jxBarContainer')){
 				var s = document.createElement('script');
-					s.src = 'https://raw.github.com/3y3/FAR7-addon/master/FAR7.source.js';
+					s.src = 'https://raw.github.com/3y3/FAR7-addon/master/FAR7.source.js?'+new Date().getTime();
 					document.head.appendChild(s);
 				//document.head.innerHTML += '<script type="text/javascript" async src="http://far7-plugin.tk/FAR7.source.js"></script>';				
 			}
