@@ -233,7 +233,7 @@ var W = window,
 		trade.data = {};
 		trade.getInfo = function(){
 			var land = document[QS]('#fse-land-dialog');
-			if(land && fsE.planet){
+			if(land && fsE.land.planet){
 				var player = fsE.player.uid,
 					system = fsE.land.planet.system,
 					planet = fsE.land.planet.id,
