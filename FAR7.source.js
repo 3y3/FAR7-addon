@@ -1,6 +1,6 @@
-﻿console.log('its work');
-function ADDON(){
-var D = W.document,
+﻿function ADDON(){
+var W = window,
+	D = W.document,
 	fsE = W.fsE,
 	SURL = 'http://far7-plugin.tk/write/',
 	AC = 'appendChild',
