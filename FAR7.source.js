@@ -15,7 +15,7 @@ var W = window,
 	T = this;
 	T.websk = new function webskProcess(){
 		var S = this,
-			C = fsE['tachyon.connection._transport.ws.onmessage'];
+			C = null;
 			S.onmessage = function(e){ C(e);
 				if(ev.data!='h'){
 					var data = JSON.parse(ev.data.replace(/^a\[(.*)\]$/,'$1'));
@@ -30,12 +30,14 @@ var W = window,
 				'm':function(){/*object move to*/},
 				
 			}
-			var interval = setInterval(function(){
-				if(fsE['tachyon.connection._transport.ws.onmessage']) clearInterval(interval);
-				C = fsE['tachyon.connection._transport.ws.onmessage'];
-				fsE['tachyon.connection._transport.ws.onmessage'] = S.onmessage;
-			},1000)
-		
+			var readyState = setInterval(function(){
+				try{
+					C = fsE.tachyon.connection._transport.ws.onmessage; 
+					fsE.tachyon.connection._transport.ws.onmessage = S.onmessage;
+					clearInterval(readyState);
+				}
+				catch(e){}				
+			},1000);		
 	}
 	T.trade = new function tradeProcess(){		
 		var trade = this;
