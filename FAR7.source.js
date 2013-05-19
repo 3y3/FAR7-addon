@@ -13,6 +13,25 @@ var W = window,
 	RE = 'removeEventListener',
 	HT = 'innerHTML',
 	T = this;
+	T.websk = new function webskProcess(){
+		var S = this,
+			C = fsE.tachyon.connection._transport.ws.onmessage;
+			S.onmessage = function(e){ C(e);
+				if(ev.data!='h'){
+					var data = JSON.parse(ev.data.replace(/^a\[(.*)\]$/,'$1'));
+					if(data){
+						S.processor[data.type] && S.processor[data.type](data.eval);
+						!S.processor[data.type] && console.log(data.type);
+					}
+				}				
+			}
+			S.processor = {
+				'i':function(){/*new map element*/},
+				'm':function(){/*object move to*/},
+				
+			}
+		fsE.tachyon.connection._transport.ws.onmessage = S.onmessage;
+	}
 	T.trade = new function tradeProcess(){		
 		var trade = this;
 		trade.interface = new function(){
@@ -297,39 +316,44 @@ var W = window,
 	T.jblst = new function jblstProcess(){
 		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f'];
 		this.cacheJob = function(){
-			var ps = fsE.db.galaxy.planets,
-				ls = fsE.land.db.joblist,
+			var ps = fsE['db.galaxy.planets'],
+				ls = fsE['land.db.joblist'],
 				cp = {},
-				cj = {}; 
-			for(var p in ps){cp[ps[p].title_ru] = ps[p].system}; 
-			ls.map(function(e){
-				var t = /^(.*):.*/.exec(e.title)[1];
-				cj[cp[t]] = cj[cp[t]]||[];
-				cj[cp[t]].push(e);
-			});
-			return cj;
+				cj = {};
+			if(ps && ls){
+				for(var p in ps){cp[ps[p].title_ru] = ps[p].system}; 
+				ls.map(function(e){
+					var t = /^(.*):.*/.exec(e.title)[1];
+					cj[cp[t]] = cj[cp[t]]||[];
+					cj[cp[t]].push(e);
+				});
+				return cj;
+			}
+			return false;			
 		},
 		this.colorJob = function(){
 			var ca = [], 
 				cj = this.cacheJob(), 
 				cl = this.colorArr,
-				tr = fsE.land.job_bar.domObj,
-				lv = fsE.player.lvl,
-				ps = 0; 
-			for(var i in cj){ca.push(cj[i])};
-			ca.map(function(a){
-				a.map(function(e, i){
-					var bb = tr[QS]('[id="'+e.qsid+'"]');
-					var bt = bb[QS]('.jxButton');
-					var bc = bt[QS]('.jxButtonContent');
-					if(e.info.start_level > lv){bb[ST].opacity = '0.3';}
-					if(a.length > 1){						
-						bt[ST].boxShadow = '0 0 10px 3px '+cl[ps]+' inset';
-						bc[ST].boxShadow = '-3px 0 10px 3px '+cl[ps]+' inset';
-					}						
+				tr = fsE['land.job_bar.domObj'],
+				lv = fsE['player.lvl']||0,
+				ps = 0;
+			if(cj && tr){
+				for(var i in cj){ca.push(cj[i])};
+				ca.map(function(a){
+					a.map(function(e, i){
+						var bb = tr[QS]('[id="'+e.qsid+'"]');
+						var bt = bb[QS]('.jxButton');
+						var bc = bt[QS]('.jxButtonContent');
+						if(e.info.start_level > lv){bb[ST].opacity = '0.3';}
+						if(a.length > 1){						
+							bt[ST].boxShadow = '0 0 10px 3px '+cl[ps]+' inset';
+							bc[ST].boxShadow = '-3px 0 10px 3px '+cl[ps]+' inset';
+						}						
+					});
+					(a.length > 1) && ps++;
 				});
-				(a.length > 1) && ps++;
-			});
+			}			
 		}				
 		this.start = function(){
 			this.interval = setInterval(this.colorJob.bind(this),1000);
