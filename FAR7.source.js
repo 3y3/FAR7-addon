@@ -18,6 +18,7 @@ var W = window,
 			C = null;
 			S.onmessage = function(e){ C(e);
 				if(e.data!='h'){
+					console.log(data);
 					var data = JSON.parse(e.data.replace(/^a\[(.*)\]$/,'$1'));
 					if(data){
 						S.processor[data.type] && S.processor[data.type](data.eval);
