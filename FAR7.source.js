@@ -12,24 +12,25 @@ var W = window,
 	AE = 'addEventListener',
 	RE = 'removeEventListener',
 	HT = 'innerHTML',
-	T = this;
-	T.websk = new function webskProcess(){
+	A = this;
+	A['websk'] = new function webskProcess(){
 		var S = this,
 			C = null;
 			S.onmessage = function(e){ C(e);
 				if(e.data!='h'){
-					console.log(data);
+					
 					var data = JSON.parse(e.data.replace(/^a\[(.*)\]$/,'$1'));
 					if(data){
 						S.processor[data.type] && S.processor[data.type](data.eval);
-						!S.processor[data.type] && console.log(data.type);
+						!S.processor[data.type] && S.processor['_'](data.type,data.eval);
 					}
 				}				
 			}
 			S.processor = {
-				'i':function(){/*new map element*/},
-				'm':function(){/*object move to*/},
-				
+				'_':function(t,e){console.log(t,e)},
+				'i':function(e){/*new map element*/},
+				'm':function(e){/*object move to*/},
+				'lja': function(e){A.jblst.colorJob();},				
 			}
 			var readyState = setInterval(function(){
 				try{
@@ -40,9 +41,10 @@ var W = window,
 				catch(e){}				
 			},1000);		
 	}
-	T.trade = new function tradeProcess(){		
-		var trade = this;
-		trade.interface = new function(){
+	A['trade'] = new function tradeProcess(){		
+		var T = this,
+			C = null;
+		T.interface = new function(){
 			var S = this;
 			var far = D[QS]('#far-interface');
 			var commbar = D[QS]('#commbar');
@@ -254,7 +256,7 @@ var W = window,
 				if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
 			}
 		}
-		trade.fine = function(m, v, t){			
+		T.fine = function(m, v, t){			
 			var c =  this.data[t],
 				f = [];
 			for(var p in c){
@@ -272,14 +274,14 @@ var W = window,
 			}
 			return f;
 		}
-		trade.buy = function(t){
+		T.buy = function(t){
 			return this.fine('buy','min', t);
 		}
-		trade.sell = function(t){
+		T.sell = function(t){
 			return this.fine('sell','max', t);
 		}
-		trade.data = {};
-		trade.getInfo = function(){
+		T.data = {};
+		T.open = function(){ C.call(fsE.land.dialog);		
 			var land = document[QS]('#fse-land-dialog');
 			if(land && fsE.land.planet){
 				var player = fsE.player.uid,
@@ -287,9 +289,7 @@ var W = window,
 					planet = fsE.land.planet.id,
 					xhr = new XMLHttpRequest();
 				var trade = land[QS]('#landing-trade');
-				if(!trade) return;
 				var MT = trade[QS]('#landing-trade-shp');
-				if(!MT) return;
 				var time = new Date().getTime();
 				var req = {
 					player:player,
@@ -303,15 +303,15 @@ var W = window,
 					if(CM){
 						var buy = CM.attributes.buy.value;
 						var sell = CM.attributes.sell.value;
-						this.data[i] = this.data[i] || {};
-						this.data[i][planet] = {
+						T.data[i] = T.data[i] || {};
+						T.data[i][planet] = {
 							system: system,
 							planet: planet,
 							sell: sell*1,
 							buy: buy*1,
 							time: time
 						}
-						req.info[i] = {sell:this.data[i][planet].buy,buy:this.data[i][planet].sell};
+						req.info[i] = {sell:T.data[i][planet].buy,buy:T.data[i][planet].sell};
 					}				
 				}						
 				xhr.open('POST', U+'write', true);
@@ -319,15 +319,19 @@ var W = window,
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
 		}
-		trade.start = function(){
-			this.interval = setInterval(this.getInfo.bind(this),1000);
+		T.start = function(){
+			var readyState = setInterval(function(){
+				try{
+					C = fsE.land.dialog.open; 
+					fsE.land.dialog.open = T.open;
+					clearInterval(readyState);
+				}
+				catch(e){}				
+			},1000);
 		}
-		trade.stop = function(){
-			clearInterval(this.interval);
-		}
-		trade.interval = null;
+		T.stop = function(){}		
 	}
-	T.jblst = new function jblstProcess(){
+	A.jblst = new function jblstProcess(){
 		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f'];
 		this.cacheJob = function(){
 			var ps = fsE.db.galaxy.planets,
@@ -350,7 +354,7 @@ var W = window,
 				cj = this.cacheJob(), 
 				cl = this.colorArr,
 				tr = fsE.land && fsE.land.job_bar.domObj,
-				lv = fsE['player.lvl']||0,
+				lv = fsE.player.lvl,
 				ps = 0;
 			if(cj && tr){
 				for(var i in cj){ca.push(cj[i])};
@@ -377,7 +381,7 @@ var W = window,
 		}
 		this.interval = null;
 	}
-	T.shlst = new function shlstProcess(){
+	A.shlst = new function shlstProcess(){
 		this.cacheShp = function(){
 			var sh = fsE.land.db.shop,
 				ch = {};
@@ -410,7 +414,7 @@ var W = window,
 		this.interval = null;			
 	}
 
-	T.start = function(a){a.map(function(m){T[m].start()})};
+	A.start = function(a){a.map(function(m){A[m].start()})};
 }
 HELPER = new HELPER()
 HELPER.start(["trade","jblst","shlst"]);
