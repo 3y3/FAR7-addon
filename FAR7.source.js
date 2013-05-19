@@ -217,9 +217,9 @@ var W = window,
 								var buy = RS[1]['1'], sell = RS[i]['2'], obj = {buy:buy, sell:sell};
 								for(var price in {buy:'',sell:''}){
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных"
-													+'\nПланета: '+fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных"
-													+'\nОбновлено в '+new Date(obj[price].time).toLocaleTimeString());
+									DT[i][price].dom[SA]('title','Система: '+(fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных")
+													+'\nПланета: '+(fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных")
+													+'\nОбновлено в '+(new Date(obj[price].time).toLocaleTimeString()));
 								}								
 							}
 						} 
@@ -230,9 +230,9 @@ var W = window,
 								(sell[0] && (obj.sell = sell[0])) || (DT[i].sell.dom[HT] = '-');
 								for(var price in obj){
 									DT[i][price].dom[HT] = obj[price][price]+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных"
-													+'\nПланета: '+fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных"
-													+'\nОбновлено в '+new Date(obj[price].time).toLocaleTimeString());
+									DT[i][price].dom[SA]('title','Система: '+(fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных")
+													+'\nПланета: '+(fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных")
+													+'\nОбновлено в '+(new Date(obj[price].time).toLocaleTimeString()));
 								}			
 							}
 						}
