@@ -217,9 +217,9 @@ var W = window,
 								var buy = RS[1]['1'], sell = RS[i]['2'], obj = {buy:buy, sell:sell};
 								for(var price in {buy:'',sell:''}){
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system].title_ru
-													+'\nПланета: '+fsE.db.galaxy.planets[obj[price].planet].title_ru
-													+'\nОбновлено в '+obj[price].time.toLocaleTimeString());
+									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных"
+													+'\nПланета: '+fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных"
+													+'\nОбновлено в '+new Date(obj[price].time).toLocaleTimeString());
 								}								
 							}
 						} 
@@ -230,9 +230,9 @@ var W = window,
 								(sell[0] && (obj.sell = sell[0])) || (DT[i].sell.dom[HT] = '-');
 								for(var price in obj){
 									DT[i][price].dom[HT] = obj[price][price]+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+obj[price].system
-													+'\nПланета: '+obj[price].planet
-													+'\nОбновлено в '+obj[price].time.toLocaleTimeString());
+									DT[i][price].dom[SA]('title','Система: '+fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных"
+													+'\nПланета: '+fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных"
+													+'\nОбновлено в '+new Date(obj[price].time).toLocaleTimeString());
 								}			
 							}
 						}
@@ -282,8 +282,8 @@ var W = window,
 					xhr = new XMLHttpRequest();
 				var trade = land[QS]('#landing-trade');
 				if(!trade) return;
-				var mater = trade[QS]('#landing-trade-shp');
-				if(!mater) return;
+				var MT = trade[QS]('#landing-trade-shp');
+				if(!MT) return;
 				var time = new Date().getTime();
 				var req = {
 					player:10080942,
@@ -293,18 +293,20 @@ var W = window,
 					info:{}
 				};
 				for(var i=1; i < 14; ++i){
-					var cur_mat = mater[QS]('#s'+i);
-					var buy = cur_mat[QS]('#is'+i+'sell');
-					var sell = cur_mat[QS]('#is'+i+'buy');
-					this.data[i] = this.data[i] || {};
-					this.data[i][planet[HT]] = {
-						system: system,
-						planet: planet[HT],
-						sell: sell[HT].replace('кр.','').replace(/\s/,'').replace('профицит','-1')*1,
-						buy: buy[HT].replace('кр.','').replace(/\s/,'').replace('дефицит','-1')*1,
-						time: time
-					}
-					req.info[i] = {sell:this.data[i][planet[HT]].sell,buy:this.data[i][planet[HT]].buy};
+					var CM = MT[QS]('#is'+i);
+					if(MT){
+						var buy = MT.buy;
+						var sell = MT.sell;
+						this.data[i] = this.data[i] || {};
+						this.data[i][planet] = {
+							system: system,
+							planet: planet,
+							sell: sell*1||'-1',
+							buy: buy*1||'-1',
+							time: time
+						}
+						req.info[i] = {sell:this.data[i][planet].buy,buy:this.data[i][planet].sell};
+					}				
 				}						
 				xhr.open('POST', U+'write', true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
