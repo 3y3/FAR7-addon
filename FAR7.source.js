@@ -214,12 +214,15 @@ var W = window,
 						if (xhr.status == 200) {
 							var RS = JSON.parse(xhr.response);
 							for(var i in RS){ ch(i);
-								var buy = RS[1]['1'], sell = RS[i]['2'], obj = {buy:buy, sell:sell};
+								var buy = RS[i]['1'], sell = RS[i]['2'], obj = {buy:buy, sell:sell};
 								for(var price in {buy:'',sell:''}){
+									var system = fsE.db.galaxy.systems[obj[price].system]||{title_ru:'нет данных'},
+										planet = fsE.db.galaxy.planets[obj[price].planet]||{title_ru:'нет данных'},
+										time = new Date(obj[price].time).toLocaleTimeString();
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+(fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных")
-													+'\nПланета: '+(fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных")
-													+'\nОбновлено в '+(new Date(obj[price].time).toLocaleTimeString()));
+									DT[i][price].dom[SA]('title','Система: '+system.title_ru
+													+'\nПланета: '+planet.title_ru
+													+'\nОбновлено в '+time);
 								}								
 							}
 						} 
@@ -295,8 +298,8 @@ var W = window,
 				for(var i=1; i < 14; ++i){
 					var CM = MT[QS]('#is'+i);
 					if(MT){
-						var buy = MT.buy;
-						var sell = MT.sell;
+						var buy = MT.attributes.buy.value;
+						var sell = MT.attributes.sell.value;
 						this.data[i] = this.data[i] || {};
 						this.data[i][planet] = {
 							system: system,
