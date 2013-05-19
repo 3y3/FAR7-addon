@@ -218,7 +218,7 @@ var W = window,
 								for(var price in {buy:'',sell:''}){
 									var system = fsE.db.galaxy.systems[obj[price].system]||{title_ru:'нет данных'},
 										planet = fsE.db.galaxy.planets[obj[price].planet]||{title_ru:'нет данных'},
-										time = new Date(obj[price].time).toLocaleTimeString();
+										time = new Date(obj[price].time*1).toLocaleTimeString();
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
 									DT[i][price].dom[SA]('title','Система: '+system.title_ru
 													+'\nПланета: '+planet.title_ru
