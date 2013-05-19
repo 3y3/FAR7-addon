@@ -304,8 +304,8 @@ var W = window,
 						this.data[i][planet] = {
 							system: system,
 							planet: planet,
-							sell: sell*1||'-1',
-							buy: buy*1||'-1',
+							sell: sell*1,
+							buy: buy*1,
 							time: time
 						}
 						req.info[i] = {sell:this.data[i][planet].buy,buy:this.data[i][planet].sell};
@@ -327,11 +327,11 @@ var W = window,
 	T.jblst = new function jblstProcess(){
 		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f'];
 		this.cacheJob = function(){
-			var ps = fsE['db.galaxy.planets'],
-				ls = fsE['land.db.joblist'],
+			var ps = fsE.db.galaxy.planets,
+				ls = fsE.land && fsE.land.db && fsE.land.db.joblist,
 				cp = {},
 				cj = {};
-			if(ps && ls){
+			if(ls){
 				for(var p in ps){cp[ps[p].title_ru] = ps[p].system}; 
 				ls.map(function(e){
 					var t = /^(.*):.*/.exec(e.title)[1];
@@ -346,7 +346,7 @@ var W = window,
 			var ca = [], 
 				cj = this.cacheJob(), 
 				cl = this.colorArr,
-				tr = fsE['land.job_bar.domObj'],
+				tr = fsE.land && fsE.land.job_bar.domObj,
 				lv = fsE['player.lvl']||0,
 				ps = 0;
 			if(cj && tr){
