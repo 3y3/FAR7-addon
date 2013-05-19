@@ -289,7 +289,7 @@ var W = window,
 				if(!MT) return;
 				var time = new Date().getTime();
 				var req = {
-					player:10080942,
+					player:player,
 					system:system,
 					planet:planet,
 					time:time,
@@ -297,9 +297,9 @@ var W = window,
 				};
 				for(var i=1; i < 14; ++i){
 					var CM = MT[QS]('#is'+i);
-					if(MT){
-						var buy = MT.attributes.buy.value;
-						var sell = MT.attributes.sell.value;
+					if(CM){
+						var buy = CM.attributes.buy.value;
+						var sell = CM.attributes.sell.value;
 						this.data[i] = this.data[i] || {};
 						this.data[i][planet] = {
 							system: system,
