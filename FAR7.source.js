@@ -284,7 +284,7 @@ var W = window,
 				if(!trade) return;
 				var mater = trade[QS]('#landing-trade-shp');
 				if(!mater) return;
-				var time = new Date();
+				var time = new Date().getTime();
 				var req = {
 					player:10080942,
 					system:system,
