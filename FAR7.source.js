@@ -281,9 +281,8 @@ var W = window,
 			return this.fine('sell','max', t);
 		}
 		T.data = {};
-		T.open = function(){ C.call(fsE.land.dialog);		
-			var land = document[QS]('#fse-land-dialog');
-			if(land && fsE.land.planet){
+		T.open = function(){ C.call(fsE.land.dialog);
+			function request(land){
 				var player = fsE.player.uid,
 					system = fsE.land.planet.system,
 					planet = fsE.land.planet.id,
@@ -318,6 +317,16 @@ var W = window,
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
+			function wait(){
+				var land = document[QS]('#fse-land-dialog');
+				if(land && fsE.land.planet){
+					request(land);
+				}
+				else{
+					setTimeout(wait, 500);
+				}
+			}
+			
 		}
 		T.start = function(){
 			var readyState = setInterval(function(){
