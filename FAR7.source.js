@@ -7,6 +7,7 @@ var W = window,
 	CE = 'createElement',
 	RC = 'removeChild',
 	QS = 'querySelector',
+	QA = 'querySelectorAll'
 	ST = 'style',
 	SA = 'setAttribute',
 	AE = 'addEventListener',
@@ -287,8 +288,6 @@ var W = window,
 					system = fsE.land.planet.system,
 					planet = fsE.land.planet.id,
 					xhr = new XMLHttpRequest();
-				var trade = land[QS]('#landing-trade');
-				var MT = trade[QS]('#landing-trade-shp');
 				var time = new Date().getTime();
 				var req = {
 					player:player,
@@ -297,29 +296,28 @@ var W = window,
 					time:time,
 					info:{}
 				};
-				for(var i=1; i < 14; ++i){
-					var CM = MT[QS]('#is'+i);
-					if(CM){
-						var buy = CM.attributes.buy.value;
-						var sell = CM.attributes.sell.value;
-						T.data[i] = T.data[i] || {};
-						T.data[i][planet] = {
-							system: system,
-							planet: planet,
-							sell: sell*1,
-							buy: buy*1,
-							time: time
-						}
-						req.info[i] = {sell:T.data[i][planet].buy,buy:T.data[i][planet].sell};
-					}				
-				}						
+				var i = 0, CM = land.item(i);
+				while(CM){
+					var buy = CM.attributes.buy.value;
+					var sell = CM.attributes.sell.value;
+					T.data[i] = T.data[i] || {};
+					T.data[i][planet] = {
+						system: system,
+						planet: planet,
+						sell: sell*1,
+						buy: buy*1,
+						time: time
+					}
+					req.info[i] = {sell:T.data[i][planet].buy,buy:T.data[i][planet].sell};
+					CM = land.item(++i);
+				}					
 				xhr.open('POST', U+'write', true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
 			(function wait(){
-				var land = document[QS]('#fse-land-dialog');
-				if(land && fsE.land.planet){
+				var land = document[QA]('#landing-trade-shp img');
+				if(land.length == 13 && fsE.land.planet){
 					request(land);
 				}
 				else{
