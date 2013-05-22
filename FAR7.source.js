@@ -317,7 +317,7 @@ var W = window,
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
-			function wait(){
+			(function wait(){
 				var land = document[QS]('#fse-land-dialog');
 				if(land && fsE.land.planet){
 					request(land);
@@ -325,7 +325,7 @@ var W = window,
 				else{
 					setTimeout(wait, 500);
 				}
-			}
+			})();
 			
 		}
 		T.start = function(){
