@@ -296,7 +296,7 @@ var W = window,
 					time:time,
 					info:{}
 				};
-				var i = 0, CM = land.item(i);
+				var i = i, CM = land.item(i-1);
 				while(CM){
 					var buy = CM.attributes.buy.value;
 					var sell = CM.attributes.sell.value;
@@ -309,7 +309,7 @@ var W = window,
 						time: time
 					}
 					req.info[i] = {sell:T.data[i][planet].buy,buy:T.data[i][planet].sell};
-					CM = land.item(++i);
+					CM = land.item(++i-1);
 				}					
 				xhr.open('POST', U+'write', true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
