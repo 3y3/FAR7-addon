@@ -246,7 +246,7 @@ var W = window,
 							}
 						}
 					}
-					xhr.send();			
+					xhr.send("jsonString=" + JSON.stringify({fraction:fsE.player.race}));			
 			};
 			function ch(i){
 				var CI = tDC[QS]('#s'+i);
