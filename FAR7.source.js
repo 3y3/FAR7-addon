@@ -296,7 +296,7 @@ var W = window,
 					time:time,
 					info:{}
 				};
-				var i = i, CM = land.item(i-1);
+				var i = 1, CM = land.item(i-1);
 				while(CM){
 					var buy = CM.attributes.buy.value;
 					var sell = CM.attributes.sell.value;
