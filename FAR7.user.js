@@ -8,7 +8,7 @@
 // ==/UserScript==
 (function (window, undefined) {
     var W;
-    if (typeof unsafeWindow != undefined) {
+    if (typeof unsafeWindow != "undefined") {
         W = unsafeWindow
     } else {
         W = window;
@@ -25,7 +25,6 @@
 			}
 			else{
 				setTimeout(checkStart,1000);
-				console.log('no fse');
 			}
 		})();		
     }

@@ -224,11 +224,13 @@ var W = window,
 								for(var price in {buy:'',sell:''}){
 									var system = fsE.db.galaxy.systems[obj[price].system]||{title_ru:'нет данных'},
 										planet = fsE.db.galaxy.planets[obj[price].planet]||{title_ru:'нет данных'},
-										time = new Date(obj[price].time*1).toLocaleTimeString();
+										time = new Date(obj[price].time*1),
+										vart = new Date() - time;
+										time = (vart > 1000*60*60)?'больше часа назад':time.toLocaleTimeString();
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
 									DT[i][price].dom[SA]('title','Система: '+system.title_ru
 													+'\nПланета: '+planet.title_ru
-													+'\nОбновлено в '+time);
+													+'\nОбновлено '+time);
 								}								
 							}
 						} 
@@ -241,7 +243,7 @@ var W = window,
 									DT[i][price].dom[HT] = obj[price][price]+'кр.';
 									DT[i][price].dom[SA]('title','Система: '+(fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных")
 													+'\nПланета: '+(fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных")
-													+'\nОбновлено в '+(new Date(obj[price].time).toLocaleTimeString()));
+													+'\nОбновлено '+(new Date(obj[price].time).toLocaleTimeString()));
 								}			
 							}
 						}
