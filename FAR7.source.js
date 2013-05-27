@@ -2,6 +2,7 @@
 var W = window,
 	D = W.document,	
 	U = 'http://far7-plugin.tk/plugin/',
+	R = W['XMLHttpRequest'],
 	fsE = W.fsE,
 	AC = 'appendChild',
 	CE = 'createElement',
@@ -226,7 +227,7 @@ var W = window,
 										planet = fsE.db.galaxy.planets[obj[price].planet]||{title_ru:'нет данных'},
 										time = new Date(obj[price].time*1),
 										vart = new Date() - time;
-										time = (vart > 1000*60*60)?'больше часа назад':time.toLocaleTimeString();
+										time = (vart > 1000*60*60)?'больше часа назад':'в '+time.toLocaleTimeString();
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
 									DT[i][price].dom[SA]('title','Система: '+system.title_ru
 													+'\nПланета: '+planet.title_ru
@@ -234,7 +235,7 @@ var W = window,
 								}								
 							}
 						} 
-						else {
+						else {// Old branch. Need update.
 							for(var i in DT){ ch(i);
 								var buy = trade.buy(i), sell = trade.sell(i), obj = {};
 								(buy[0] && (obj.buy = buy[0])) 	 || (DT[i].buy.dom[HT] = '-');
@@ -340,7 +341,7 @@ var W = window,
 		}
 		T.stop = function(){}		
 	}
-	A.jblst = new function jblstProcess(){
+	A['jblst'] = new function jblstProcess(){
 		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f'];
 		this.cacheJob = function(){
 			var ps = fsE.db.galaxy.planets,
@@ -390,7 +391,7 @@ var W = window,
 		}
 		this.interval = null;
 	}
-	A.shlst = new function shlstProcess(){
+	A['shlst'] = new function shlstProcess(){
 		this.cacheShp = function(){
 			var sh = fsE.land.db.shop,
 				ch = {};
@@ -402,10 +403,10 @@ var W = window,
 				ch = this.cacheShp();
 			for(var i in ch){				
 				(ch[i].length > 1) && ch[i].sort(function(a,b){
-					var c=d=0; 
-					for(var s in a.bonus){c+=a.bonus[s]*1;}
-					for(var s in b.bonus){d+=b.bonus[s]*1;}
-					return c<d;
+					var c = d = 0; 
+					for(var s in a.bonus){if(/^a_.*/.test(s)) c+=a.bonus[s]*1;}
+					for(var s in b.bonus){if(/^a_.*/.test(s)) d+=b.bonus[s]*1;}
+					return c < d;
 				});
 				ch[i].map(function(e,i){
 					var bb = sh[QS]('#s'+e.slot);
