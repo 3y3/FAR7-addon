@@ -288,6 +288,7 @@ var W = window,
 		T.open = function(){ C.call(fsE.land.dialog);
 			function request(land){
 				var uid = fsE.player.uid,
+					fract = fsE.player.race,
 					player = fsE.player.login,
 					system = fsE.land.planet.system,
 					planet = fsE.land.planet.id,
@@ -295,6 +296,7 @@ var W = window,
 				var time = new Date().getTime();
 				var req = {
 					uid:uid,
+					fract:fract,
 					player:player,
 					system:system,
 					planet:planet,
