@@ -1,4 +1,4 @@
-﻿function HELPER(){
+﻿function HELPER(){ //TODO: style file, template files;
 var W = window,
 	D = W.document,	
 	U = 'http://far7-plugin.tk/plugin/',
@@ -413,7 +413,7 @@ var W = window,
 		}
 		this.interval = null;
 	}
-	A['shlst'] = new function shlstProcess(){
+	A['shlst'] = new function shlstProcess(){ //TODO: clear empty cells
 		this.cacheShp = function(){
 			var sh = fsE.land.db.shop,
 				ch = {};
@@ -421,14 +421,14 @@ var W = window,
 			return ch;
 		}
 		this.lightBst = function(){
-			var sh = fsE.land.tab_div.shop.shp,
+			var sh = fsE.land.alltabs.shop.shp,
 				ch = this.cacheShp();
 			for(var i in ch){				
 				(ch[i].length > 1) && ch[i].sort(function(a,b){
 					var c = d = 0; 
 					for(var s in a.bonus){if(/^a_.*/.test(s)) c+=a.bonus[s]*1;}
 					for(var s in b.bonus){if(/^a_.*/.test(s)) d+=b.bonus[s]*1;}
-					return c < d;
+					return c==d?0:c<d?1:-1;
 				});
 				ch[i].map(function(e,i){
 					var bb = sh[QS]('#s'+e.slot);
