@@ -32,7 +32,8 @@ var W = window,
 				'_':function(t,e){console.log(t,e)},
 				'i':function(e){/*new map element*/},
 				'm':function(e){/*object move to*/},
-				'lja': function(e){A.jblst.colorJob();},				
+				'lja': function(e){A.jblst.colorJob();},
+				'ltu': function(e){A.trade.update(e).write();}
 			}
 			var readyState = setInterval(function(){
 				try{
@@ -285,15 +286,14 @@ var W = window,
 			return this.fine('sell','max', t);
 		}
 		T.data = {};
-		T.open = function(){ C.call(fsE.land.dialog);
-			function request(land){
-				var uid = fsE.player.uid,
-					fraction = fsE.player.race,
-					player = fsE.player.login,
-					system = fsE.land.planet.system,
-					planet = fsE.land.planet.id,
-					xhr = new XMLHttpRequest();
-				var time = new Date().getTime();
+		T.write = function(){
+			var uid = fsE.player.uid,
+				fraction = fsE.player.race,
+				player = fsE.player.login,
+				system = fsE.land.planet.system,
+				planet = fsE.land.planet.id,
+				time = new Date().getTime();
+			if(T.data[planet]){
 				var req = {
 					uid:uid,
 					fraction:fraction,
@@ -301,47 +301,62 @@ var W = window,
 					system:system,
 					planet:planet,
 					time:time,
-					info:{}
-				};
-				var i = 1, CM = land.item(i-1);
-				while(CM){
-					var buy = CM.attributes.buy.value;
-					var sell = CM.attributes.sell.value;
-					T.data[i] = T.data[i] || {};
-					T.data[i][planet] = {
-						system: system,
-						planet: planet,
-						sell: sell*1,
-						buy: buy*1,
-						time: time
-					}
-					req.info[i] = {sell:T.data[i][planet].buy,buy:T.data[i][planet].sell};
-					CM = land.item(++i-1);
-				}					
+					info:T.data[planet]
+				},
+				xhr = new XMLHttpRequest();				
 				xhr.open('POST', U+'write', true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
+			return T;
+		}
+		T.update = function(data){
+			var planet = fsE.land.planet.id;
+			if(planet){				
+				T.data[planet][data.isid] = {buy:data.sell, sell:data.buy};
+			}
+			return T;
+		}
+		T.collect = function(){
+			var land = fsE.land.alltabs.trade.shp.children,
+				planet = fsE.land.planet.id;
+			var i = 1, CM = land.item(i-1);
+			while(CM){ CM = CM.children[0];
+				var buy = CM.attributes.buy.value;
+				var sell = CM.attributes.sell.value;
+				T.data[planet] = T.data[planet] || {};
+				T.data[planet][i] = {
+					sell: sell*1,
+					buy: buy*1
+				}
+				CM = land.item(++i-1);
+			}
+			return T;
+		}
+		T.open = function(){ C.call(fsE.land.dialog);			
 			(function wait(){
-				var land = document[QA]('#landing-trade-shp img');
-				if(land.length == 13 && fsE.land.planet){
-					request(land);
+				if(!fsE.land.loading && fsE.land.planet){
+					T.collect().write();
 				}
 				else{
 					setTimeout(wait, 500);
 				}
 			})();
-			
+			return T;
 		}
 		T.start = function(){
 			var readyState = setInterval(function(){
 				try{
 					C = fsE.land.dialog.open; 
 					fsE.land.dialog.open = T.open;
+					if(!fsE.land.loading && fsE.land.planet){
+						T.collect().write();
+					}
 					clearInterval(readyState);
 				}
-				catch(e){}				
+				catch(e){console.log(e.message)}
 			},1000);
+			return T;
 		}
 		T.stop = function(){}		
 	}
