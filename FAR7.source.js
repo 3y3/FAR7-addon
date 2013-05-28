@@ -53,7 +53,7 @@ var W = window,
 			var commbar = D[QS]('#commbar');
 			var cC = commbar[QS]('.jxBarContainer');
 			var TC = D[CE]('div');
-			TC[HT] = 
+			'addon-trade-button':{ TC[HT] = 
 				'<span class="jxButtonContainer" id="addon-trade-button">'
 					+'<a class="jxButton jxButtonFlyout jxDiscloser" target="" href="javascript:void(0);" title="Информация по лучшим ценам на ресурсы с посещенных вами планет." alt="Информация по лучшим ценам на ресурсы с посещенных вами планет.">'
 						+'<span class="jxButtonContent">'
@@ -61,7 +61,8 @@ var W = window,
 							+'<span class="jxButtonLabel" style="">'
 								+'<div id="addon-trade">Торговля</div>'
 				+'</span></span></a></span>';
-
+			}
+			
 			var tB = S['TradeButton'] = TC[QS]('#addon-trade-button');
 				tB[AE]('click', dd, false);
 			cC[AC](tB);
@@ -69,16 +70,17 @@ var W = window,
 			
 			var rect = tB.getClientRects()[0];
 			
-			TC[HT] =
+			'addon-trade-panel':{ TC[HT] =
 				'<div id="addon-trade-panel" class="jxFlyout jxHasChrome" style="left: '+(rect.left - 5)+'px; top: 25px; z-index: 1000;width: 670px; height: 375px;display: none;">'
 					+'<div class="jxFlyoutContent"></div>'
 					+'<div class="jxChrome" style="padding: 0px; background-image: none; z-index: -1;"><div class="jxChromeTR"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeTL"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeBL"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeBR"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div></div>'
 				+'</div>';
-
+			}
+			
 			var tD = S['TradeDialog'] = TC[QS]('#addon-trade-panel');
 			far[AC](tD);
 			
-			TC[HT] = 
+			'landing-trade':{ TC[HT] = 
 				'<div id="landing-trade">'+
 					'<div id="landing-trade-shp">'+
 						'<div id="s1" class="s1 trade">'+
@@ -174,6 +176,7 @@ var W = window,
 						'</div>'+
 					'</div>'+
 				'</div>';
+			}
 			
 			var tDC = S['TradeDialogContent'] = TC[QS]('#landing-trade');
 			var DT = S['DOM'] = {};
@@ -326,8 +329,8 @@ var W = window,
 				var sell = CM.attributes.sell.value;
 				T.data[planet] = T.data[planet] || {};
 				T.data[planet][i] = {
-					sell: sell*1,
-					buy: buy*1
+					sell: buy*1,
+					buy: sell*1
 				}
 				CM = land.item(++i-1);
 			}
@@ -442,7 +445,19 @@ var W = window,
 		}
 		this.interval = null;			
 	}
+	A['gchat'] = new function gchatProcess(){
+	
+	}
 	A['start'] = function(a){a.map(function(m){A[m].start()})};
 }
 HELPER = new HELPER()
 HELPER.start(["trade","jblst","shlst"]);
+/*
+<div id="globalchat-history" style="
+    position: absolute;  
+    top: 35px;  
+    right: 2px;  
+    background: no-repeat center;  height: 16px;  width: 16px;  cursor: url(&quot;/static/img/u/cursor-pointer.png&quot;) 8 0, pointer;
+    background-image: url(http://game.far7.by/static/img/u/icon-communicator-quests.png);
+" title="История сообщений"></div>
+*/
