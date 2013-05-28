@@ -287,12 +287,14 @@ var W = window,
 		T.data = {};
 		T.open = function(){ C.call(fsE.land.dialog);
 			function request(land){
-				var player = fsE.player.uid,
+				var uid = fsE.player.uid,
+					player = fsE.player.login,
 					system = fsE.land.planet.system,
 					planet = fsE.land.planet.id,
 					xhr = new XMLHttpRequest();
 				var time = new Date().getTime();
 				var req = {
+					uid:uid,
 					player:player,
 					system:system,
 					planet:planet,
@@ -423,8 +425,7 @@ var W = window,
 		}
 		this.interval = null;			
 	}
-
-	A.start = function(a){a.map(function(m){A[m].start()})};
+	A['start'] = function(a){a.map(function(m){A[m].start()})};
 }
 HELPER = new HELPER()
 HELPER.start(["trade","jblst","shlst"]);
