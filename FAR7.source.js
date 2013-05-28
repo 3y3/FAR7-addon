@@ -53,7 +53,7 @@ var W = window,
 			var commbar = D[QS]('#commbar');
 			var cC = commbar[QS]('.jxBarContainer');
 			var TC = D[CE]('div');
-			'addon-trade-button':{ TC[HT] = 
+			button:{ TC[HT] = 
 				'<span class="jxButtonContainer" id="addon-trade-button">'
 					+'<a class="jxButton jxButtonFlyout jxDiscloser" target="" href="javascript:void(0);" title="Информация по лучшим ценам на ресурсы с посещенных вами планет." alt="Информация по лучшим ценам на ресурсы с посещенных вами планет.">'
 						+'<span class="jxButtonContent">'
@@ -70,7 +70,7 @@ var W = window,
 			
 			var rect = tB.getClientRects()[0];
 			
-			'addon-trade-panel':{ TC[HT] =
+			panel:{ TC[HT] =
 				'<div id="addon-trade-panel" class="jxFlyout jxHasChrome" style="left: '+(rect.left - 5)+'px; top: 25px; z-index: 1000;width: 670px; height: 375px;display: none;">'
 					+'<div class="jxFlyoutContent"></div>'
 					+'<div class="jxChrome" style="padding: 0px; background-image: none; z-index: -1;"><div class="jxChromeTR"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeTL"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeBL"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeBR"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div></div>'
@@ -80,7 +80,7 @@ var W = window,
 			var tD = S['TradeDialog'] = TC[QS]('#addon-trade-panel');
 			far[AC](tD);
 			
-			'landing-trade':{ TC[HT] = 
+			dialog:{ TC[HT] = 
 				'<div id="landing-trade">'+
 					'<div id="landing-trade-shp">'+
 						'<div id="s1" class="s1 trade">'+
