@@ -47,13 +47,14 @@ var W = window,
 	A['trade'] = new function tradeProcess(){		
 		var T = this,
 			C = null;
-		T.interface = new function(){
+		T.data 		= 	{};
+		T.interface = 	new function(){
 			var S = this;
 			var far = D[QS]('#far-interface');
 			var commbar = D[QS]('#commbar');
 			var cC = commbar[QS]('.jxBarContainer');
 			var TC = D[CE]('div');
-			button:{ TC[HT] = 
+/*in file*/	button:{ TC[HT] = 
 				'<span class="jxButtonContainer" id="addon-trade-button">'
 					+'<a class="jxButton jxButtonFlyout jxDiscloser" target="" href="javascript:void(0);" title="Информация по лучшим ценам на ресурсы с посещенных вами планет." alt="Информация по лучшим ценам на ресурсы с посещенных вами планет.">'
 						+'<span class="jxButtonContent">'
@@ -70,7 +71,7 @@ var W = window,
 			
 			var rect = tB.getClientRects()[0];
 			
-			panel:{ TC[HT] =
+/*in file*/	panel:{ TC[HT] =
 				'<div id="addon-trade-panel" class="jxFlyout jxHasChrome" style="left: '+(rect.left - 5)+'px; top: 25px; z-index: 1000;width: 670px; height: 375px;display: none;">'
 					+'<div class="jxFlyoutContent"></div>'
 					+'<div class="jxChrome" style="padding: 0px; background-image: none; z-index: -1;"><div class="jxChromeTR"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeTL"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeBL"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div><div class="jxChromeBR"><img class="png24" src="http://game.far7.by/static/img/u/chrome-flyout.png" alt="" title=""></div></div>'
@@ -80,7 +81,7 @@ var W = window,
 			var tD = S['TradeDialog'] = TC[QS]('#addon-trade-panel');
 			far[AC](tD);
 			
-			dialog:{ TC[HT] = 
+/*in file*/	dialog:{ TC[HT] = 
 				'<div id="landing-trade">'+
 					'<div id="landing-trade-shp">'+
 						'<div id="s1" class="s1 trade">'+
@@ -264,7 +265,7 @@ var W = window,
 				if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
 			}
 		}
-		T.fine = function(m, v, t){			
+		T.fine 		= 	function(m, v, t){			
 			var c =  this.data[t],
 				f = [];
 			for(var p in c){
@@ -282,14 +283,13 @@ var W = window,
 			}
 			return f;
 		}
-		T.buy = function(t){
+		T.buy 		= 	function(t){
 			return this.fine('buy','min', t);
 		}
-		T.sell = function(t){
+		T.sell 		= 	function(t){
 			return this.fine('sell','max', t);
 		}
-		T.data = {};
-		T.write = function(){
+		T.write 	= 	function(){
 			var uid = fsE.player.uid,
 				fraction = fsE.player.race,
 				player = fsE.player.login,
@@ -313,14 +313,14 @@ var W = window,
 			}
 			return T;
 		}
-		T.update = function(data){
+		T.update 	= 	function(data){
 			var planet = fsE.land.planet.id;
 			if(planet){				
 				T.data[planet][data.isid] = {buy:data.sell, sell:data.buy};
 			}
 			return T;
 		}
-		T.collect = function(){
+		T.collect 	= 	function(){
 			var land = fsE.land.alltabs.trade.shp.children,
 				planet = fsE.land.planet.id;
 			var i = 1, CM = land.item(i-1);
@@ -336,7 +336,7 @@ var W = window,
 			}
 			return T;
 		}
-		T.open = function(){ C.call(fsE.land.dialog);			
+		T.open 		= 	function(){ C.call(fsE.land.dialog);			
 			(function wait(){
 				if(!fsE.land.loading && fsE.land.planet){
 					T.collect().write();
@@ -347,7 +347,7 @@ var W = window,
 			})();
 			return T;
 		}
-		T.start = function(){
+		T.start 	= 	function(){
 			var readyState = setInterval(function(){
 				try{
 					C = fsE.land.dialog.open; 
@@ -361,10 +361,10 @@ var W = window,
 			},1000);
 			return T;
 		}
-		T.stop = function(){}		
+		T.stop 		= 	function(){}		
 	}
 	A['jblst'] = new function jblstProcess(){
-		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f'];
+		this.colorArr = ['#f00','#0a0','#00a','#ff0','#0ff','#f0f','#fff'];
 		this.cacheJob = function(){
 			var ps = fsE.db.galaxy.planets,
 				ls = fsE.land && fsE.land.db && fsE.land.db.joblist,
@@ -450,8 +450,7 @@ var W = window,
 	}
 	A['start'] = function(a){a.map(function(m){A[m].start()})};
 }
-HELPER = new HELPER()
-HELPER.start(["trade","jblst","shlst"]);
+new HELPER().start(["trade","jblst","shlst"]);
 /*
 <div id="globalchat-history" style="
     position: absolute;  
