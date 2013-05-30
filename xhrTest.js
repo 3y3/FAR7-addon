@@ -1,9 +1,10 @@
 var url = 'http://far7-plugin.tk/',
     req = {
-        player:10080942,
+		id: 1004089,
+        player:'haba-haba',
         system:1,
         planet:4,
-        time:new Date(),
+        time:new Date().getTime(),
         info:{
             "1":{sell:123, buy:456},
             "2":{sell:234, buy:765},
