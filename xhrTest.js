@@ -1,6 +1,7 @@
 var url = 'http://far7-plugin.tk/',
     req = {
 		id: 1004089,
+		fraction: 'f',
         player:'haba-haba',
         system:1,
         planet:4,
