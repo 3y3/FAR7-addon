@@ -232,7 +232,9 @@ var W = window,
 										planet = fsE.db.galaxy.planets[obj[price].planet]||{title_ru:'нет данных'},
 										time = new Date(obj[price].time*1),
 										vart = new Date() - time;
-										time = (vart > 1000*60*60)?'больше часа назад':'в '+time.toLocaleTimeString();
+										time = 	(vart > 1000*60*60*24)?'больше дня назад'
+												:(vart > 1000*60*60)?'больше часа назад'
+												:'в '+time.toLocaleTimeString();
 									DT[i][price].dom[HT] = obj[price].price+'кр.';
 									DT[i][price].dom[SA]('title','Система: '+system.title_ru
 													+'\nПланета: '+planet.title_ru
@@ -240,19 +242,7 @@ var W = window,
 								}								
 							}
 						} 
-						else {// Old branch. Need update.
-							for(var i in DT){ ch(i);
-								var buy = trade.buy(i), sell = trade.sell(i), obj = {};
-								(buy[0] && (obj.buy = buy[0])) 	 || (DT[i].buy.dom[HT] = '-');
-								(sell[0] && (obj.sell = sell[0])) || (DT[i].sell.dom[HT] = '-');
-								for(var price in obj){
-									DT[i][price].dom[HT] = obj[price][price]+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+(fsE.db.galaxy.systems[obj[price].system+'.title_ru']||"нет данных")
-													+'\nПланета: '+(fsE.db.galaxy.planets[obj[price].planet+'.title_ru']||"нет данных")
-													+'\nОбновлено '+(new Date(obj[price].time).toLocaleTimeString()));
-								}			
-							}
-						}
+						else {console.error('No response from '+U+'read');}
 					}
 					xhr.send("jsonString=" + JSON.stringify({fraction:fsE.player.race}));			
 			};
@@ -264,30 +254,6 @@ var W = window,
 				if(!CI[QS]('#is'+i+'buy')){	CI[AC](DT[i].sell.dom)	}					
 				if(!CI[QS]('#is'+i+'arrow')){	CI[AC](DT[i].arrow.dom)}
 			}
-		}
-		T.fine 		= 	function(m, v, t){			
-			var c =  this.data[t],
-				f = [];
-			for(var p in c){
-				if(c[p][m] != -1){
-					if(!f[0]){ f[0] = c[p]; continue;}
-					if(v == 'max'){
-						if(c[p][m] > f[0][m]) f = [c[p]];
-						else if(c[p][m] == f[0][m]) f.push(c[p]);
-					}
-					if(v == 'min'){
-						if(c[p][m] < f[0][m]) f = [c[p]];
-						else if(c[p][m] == f[0][m]) f.push(c[p]);
-					}
-				}
-			}
-			return f;
-		}
-		T.buy 		= 	function(t){
-			return this.fine('buy','min', t);
-		}
-		T.sell 		= 	function(t){
-			return this.fine('sell','max', t);
 		}
 		T.write 	= 	function(){
 			var uid = fsE.player.uid,
