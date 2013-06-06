@@ -1,6 +1,6 @@
 {
   "name": "FAR7-helper (secure)",
-  "version": "1.3",
+  "version": "1.5",
   "manifest_version": 2,
   "content_security_policy": "script-src 'self'; object-src 'self'",
   "description": "FAR7-helper - Помощник для браузерной игры FAR7",
