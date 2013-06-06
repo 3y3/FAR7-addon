@@ -311,12 +311,12 @@ var W = window,
 			if(T.data[planet]){
 				var req = {
 					action: 'send',
-					id:uid,
+					id:uid*1,
 					name:player,
 					fraction:fraction,					
-					system:system,
-					planet:planet,
-					time:time,
+					system:system*1,
+					planet:planet*1,
+					time:time*1,
 					goods:T.data[planet]
 				},
 				xhr = new XMLHttpRequest();				
