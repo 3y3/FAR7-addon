@@ -317,7 +317,7 @@ var W = window,
 					system:system,
 					planet:planet,
 					time:time,
-					info:T.data[planet]
+					goods:T.data[planet]
 				},
 				xhr = new XMLHttpRequest();				
 				xhr.open('POST', U, true);
