@@ -272,7 +272,7 @@ var W = window,
 							var ND = {};
 								ND['title_'+lang] = _L('no data');
 							for(var nm in RS){ ch(T.ids[nm]);
-								var obj = RS[nm];
+								var obj = {buy:RS[nm].sell, sell:RS[nm].buy};
 								for(var price in obj){
 									var system = fsE.db.galaxy.systems[obj[price].system]||ND,
 										planet = fsE.db.galaxy.planets[obj[price].planet]||ND,
@@ -329,7 +329,7 @@ var W = window,
 		T.update 	= 	function(data){
 			var planet = fsE.land.planet.id;
 			if(planet){				
-				T.data[planet][T.nms[data.isid]] = {buy:data.buy, sell:data.sell};
+				T.data[planet][T.nms[data.isid]] = {buy:data.sell, sell:data.buy};
 			}
 			return T;
 		}
@@ -342,8 +342,8 @@ var W = window,
 				var sell = CM.attributes.sell.value;
 				T.data[planet] = T.data[planet] || {};
 				T.data[planet][T.nms[i]] = {
-					sell: sell*1,
-					buy: buy*1
+					sell: buy*1,
+					buy: sell*1
 				}
 				CM = land.item(++i-1);
 			}
