@@ -14,7 +14,7 @@
 function HELPER(){ //TODO: style file, template files;
 var W = window,
 	D = W.document,	
-	U = 'http://far7-plugin.tk/plugin/',
+	U = 'http://far7-plugin.tk/trade.php',
 	R = W['XMLHttpRequest'],
 	fsE = W.fsE,
 	lang = fsE.lang,
@@ -263,7 +263,7 @@ var W = window,
 			};
 			function ui(){
 				var xhr = new XMLHttpRequest();
-					xhr.open('POST', U+'read', true);
+					xhr.open('POST', U, true);
 					xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 					xhr.onreadystatechange = function(){
 						if (xhr.readyState != 4) return;						
@@ -290,7 +290,7 @@ var W = window,
 						} 
 						else {console.error('No response from '+U+'read');}
 					}
-					xhr.send("jsonString=" + JSON.stringify({fraction:fsE.player.race}));			
+					xhr.send("jsonString=" + JSON.stringify({action:'take',fraction:fsE.player.race}));			
 			};
 			function ch(i){
 				var CI = tDC[QS]('#s'+i);
