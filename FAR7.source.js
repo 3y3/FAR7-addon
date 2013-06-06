@@ -288,7 +288,7 @@ var W = window,
 								}								
 							}
 						} 
-						else {console.error('No response from '+U+'read');}
+						else {console.error('No response from '+U);}
 					}
 					xhr.send("jsonString=" + JSON.stringify({action:'take',fraction:fsE.player.race}));			
 			};
@@ -320,7 +320,7 @@ var W = window,
 					info:T.data[planet]
 				},
 				xhr = new XMLHttpRequest();				
-				xhr.open('POST', U+'write', true);
+				xhr.open('POST', U, true);
 				xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 				xhr.send("jsonString=" + JSON.stringify(req));
 			}
