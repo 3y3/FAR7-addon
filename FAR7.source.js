@@ -342,8 +342,8 @@ var W = window,
 				var sell = CM.attributes.sell.value;
 				T.data[planet] = T.data[planet] || {};
 				T.data[planet][T.nms[i]] = {
-					sell: buy*1,
-					buy: sell*1
+					sell: sell*1,
+					buy: buy*1
 				}
 				CM = land.item(++i-1);
 			}
