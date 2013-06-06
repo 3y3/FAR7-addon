@@ -329,7 +329,7 @@ var W = window,
 		T.update 	= 	function(data){
 			var planet = fsE.land.planet.id;
 			if(planet){				
-				T.data[planet][T.nms[data.isid]] = {buy:data.sell, sell:data.buy};
+				T.data[planet][T.nms[data.isid]] = {buy:data.buy, sell:data.sell};
 			}
 			return T;
 		}
