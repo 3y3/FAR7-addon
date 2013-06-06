@@ -1,14 +1,28 @@
-﻿function HELPER(){ //TODO: style file, template files;
+﻿var __LOCALE__ = {
+	ru:{
+		'no data':'нет данных',
+		System:'Система',
+		Planet:'Планета',
+		Update:'Обновлено',
+		Trade:'Торговля',
+		'over day':'больше дня назад',
+		'over hour':'больше часа назад'
+	},
+	en:{},
+	be:{}
+}
+function HELPER(){ //TODO: style file, template files;
 var W = window,
 	D = W.document,	
 	U = 'http://far7-plugin.tk/plugin/',
 	R = W['XMLHttpRequest'],
 	fsE = W.fsE,
+	lang = fsE.lang,
 	AC = 'appendChild',
 	CE = 'createElement',
 	RC = 'removeChild',
 	QS = 'querySelector',
-	QA = 'querySelectorAll'
+	QA = 'querySelectorAll',
 	ST = 'style',
 	SA = 'setAttribute',
 	AE = 'addEventListener',
@@ -47,6 +61,36 @@ var W = window,
 	A['trade'] = new function tradeProcess(){		
 		var T = this,
 			C = null;
+		T.nms = {
+			'1':'tore',
+			'2':'tfoo',
+			'3':'tfue',
+			'4':'tmin',
+			'5':'tmat',
+			'6':'talc',
+			'7':'tmed',
+			'8':'ttch',
+			'9':'tart',
+			'10':'tgdt',
+			'11':'tdrg',
+			'12':'twea',
+			'13':'tlux'
+		};
+		T.ids = {
+			'tore':'1',
+			'tfoo':'2',
+			'tfue':'3',
+			'tmin':'4',
+			'tmat':'5',
+			'talc':'6',
+			'tmed':'7',
+			'ttch':'8',
+			'tart':'9',
+			'tgdt':'10',
+			'tdrg':'11',
+			'twea':'12',
+			'tlux':'13'
+		};
 		T.data 		= 	{};
 		T.interface = 	new function(){
 			var S = this;
@@ -60,7 +104,7 @@ var W = window,
 						+'<span class="jxButtonContent">'
 							+'<img class="jxButtonIcon" src="http://game.far7.by/static/img/u/a_pixel.png" title="Информация по лучшим ценам на ресурсы с посещенных вами планет." alt="Информация по лучшим ценам на ресурсы с посещенных вами планет." style="background-image: url(http://game.far7.by/static/img/u/icon-trade.png);"/>'
 							+'<span class="jxButtonLabel" style="">'
-								+'<div id="addon-trade">Торговля</div>'
+								+'<div id="addon-trade">'+_L('Trade')+'</div>'
 				+'</span></span></a></span>';
 			}
 			
@@ -189,7 +233,7 @@ var W = window,
 				var sell 	= CI[QS]('#is'+i+'sell');
 				var count 	= CI[QS]('#is'+i+'c');
 				var arrow 	= CI[QS]('#is'+i+'arrow');
-				DT[i] = {
+				DT[T.nms[i]] = {
 					'img': {dom:img},
 					'count':{dom:count},
 					'sell': {dom:sell},
@@ -225,20 +269,22 @@ var W = window,
 						if (xhr.readyState != 4) return;						
 						if (xhr.status == 200) {
 							var RS = JSON.parse(xhr.response);
-							for(var i in RS){ ch(i);
-								var buy = RS[i]['1'], sell = RS[i]['2'], obj = {buy:buy, sell:sell};
-								for(var price in {buy:'',sell:''}){
-									var system = fsE.db.galaxy.systems[obj[price].system]||{title_ru:'нет данных'},
-										planet = fsE.db.galaxy.planets[obj[price].planet]||{title_ru:'нет данных'},
+							var ND = {};
+								ND['title_'+lang] = _L('no data');
+							for(var nm in RS){ ch(T.ids[nm]);
+								var obj = RS[nm];
+								for(var price in obj){
+									var system = fsE.db.galaxy.systems[obj[price].system]||ND,
+										planet = fsE.db.galaxy.planets[obj[price].planet]||ND,
 										time = new Date(obj[price].time*1),
 										vart = new Date() - time;
-										time = 	(vart > 1000*60*60*24)?'больше дня назад'
-												:(vart > 1000*60*60)?'больше часа назад'
+										time = 	(vart > 1000*60*60*24)?_L('over day')
+												:(vart > 1000*60*60)?_L('over hour')
 												:'в '+time.toLocaleTimeString();
-									DT[i][price].dom[HT] = obj[price].price+'кр.';
-									DT[i][price].dom[SA]('title','Система: '+system.title_ru
-													+'\nПланета: '+planet.title_ru
-													+'\nОбновлено '+time);
+									DT[nm][price].dom[HT] = obj[price].price+'кр.';
+									DT[nm][price].dom[SA]('title',_L('System')+': '+system['title_'+lang]
+													+'\n'+_L('Planet')+': '+planet['title_'+lang]
+													+'\n'+_L('Update')+' '+time);
 								}								
 							}
 						} 
@@ -264,9 +310,10 @@ var W = window,
 				time = new Date().getTime();
 			if(T.data[planet]){
 				var req = {
-					uid:uid,
-					fraction:fraction,
-					player:player,
+					action: 'send',
+					id:uid,
+					name:player,
+					fraction:fraction,					
 					system:system,
 					planet:planet,
 					time:time,
@@ -282,7 +329,7 @@ var W = window,
 		T.update 	= 	function(data){
 			var planet = fsE.land.planet.id;
 			if(planet){				
-				T.data[planet][data.isid] = {buy:data.sell, sell:data.buy};
+				T.data[planet][T.nms[data.isid]] = {buy:data.sell, sell:data.buy};
 			}
 			return T;
 		}
@@ -294,7 +341,7 @@ var W = window,
 				var buy = CM.attributes.buy.value;
 				var sell = CM.attributes.sell.value;
 				T.data[planet] = T.data[planet] || {};
-				T.data[planet][i] = {
+				T.data[planet][T.nms[i]] = {
 					sell: buy*1,
 					buy: sell*1
 				}
@@ -337,7 +384,7 @@ var W = window,
 				cp = {},
 				cj = {};
 			if(ls){
-				for(var p in ps){cp[ps[p].title_ru] = ps[p].system}; 
+				for(var p in ps){cp[ps[p]['title_'+lang]] = ps[p].system}; 
 				ls.map(function(e){
 					var t = /^(.*):.*/.exec(e.title)[1];
 					cj[cp[t]] = cj[cp[t]]||[];
@@ -415,8 +462,14 @@ var W = window,
 	
 	}
 	A['start'] = function(a){a.map(function(m){A[m].start()})};
+	
+	function _L(target){
+		if(!__LOCALE__[lang]) return target;
+		return __LOCALE__[lang][target]||target;
+	}
 }
 new HELPER().start(["trade","jblst","shlst"]);
+
 /*
 <div id="globalchat-history" style="
     position: absolute;  
